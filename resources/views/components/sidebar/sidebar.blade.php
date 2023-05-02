@@ -12,5 +12,5 @@
 
     <x-sidebar.content />
     
-    <x-sidebar.footer />
+    {{-- <x-sidebar.footer /> --}}
 </aside>
