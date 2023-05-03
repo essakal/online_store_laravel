@@ -19,9 +19,27 @@
             display: none;
         }
     </style>
-    
+
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tw-elements/dist/css/tw-elements.min.css" />
+    <script src="https://cdn.tailwindcss.com/3.3.0"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                fontFamily: {
+                    sans: ["Roboto", "sans-serif"],
+                    body: ["Roboto", "sans-serif"],
+                    mono: ["ui-monospace", "monospace"],
+                },
+            },
+            corePlugins: {
+                preflight: false,
+            },
+        };
+    </script>
 </head>
 
 <body class="font-sans antialiased">
@@ -30,13 +48,12 @@
             <!-- Sidebar -->
             <x-sidebar.sidebar />
             <!-- Page Wrapper -->
-            <div class="flex flex-col min-h-screen" 
-                :class="{ 
+            <div class="flex flex-col min-h-screen"
+                :class="{
                     'lg:ml-64': isSidebarOpen,
                     'md:ml-16': !isSidebarOpen
-                }" 
-                style="transition-property: margin; transition-duration: 150ms;"
-            >
+                }"
+                style="transition-property: margin; transition-duration: 150ms;">
 
                 <!-- Navbar -->
                 <x-navbar />
@@ -58,6 +75,7 @@
             </div>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/tw-elements/dist/js/tw-elements.umd.min.js"></script>
 </body>
 
 </html>
