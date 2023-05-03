@@ -14,7 +14,7 @@
             @yield('navbar')                    {{-- navbar --}}
         </div>
 
-        <div class="bg-red-600 m-4 p-4">
+        <div class="bg-gray-100 rounded m-4 p-4 shadow-lg shadow-gray-200">
             <div>
                 @yield('elements')              {{-- content --}}
             </div>

@@ -9,5 +9,5 @@
 @endsection
 
 @section('elements')
-    <h2>qsfdq</h2>
+    @yield('content')
 @endsection
