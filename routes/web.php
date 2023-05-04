@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\CategoryController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,13 +18,21 @@ Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
 
-Route::get('/admin/categories', function () {
-    return view('admin.categories');
-})->middleware(['auth', 'verified'])->name('admin.categories');
-
+// Route::get('/admin/categories', function () {
+//     return view('admin.categories');
+// })->middleware(['auth', 'verified'])->name('admin.categories');
+Route::group(["prefix" => "admin"], function () {
+    Route::get('/categories/index', [CategoryController::class, 'index'])->middleware(['auth', 'verified'])->name('admin.categories.index');
+    Route::post('/categories/store', [CategoryController::class, 'store'])->middleware(['auth', 'verified'])->name('admin.categories.store');
+    Route::get('/categories/delete/{id}', [CategoryController::class, 'destroy'])->middleware(['auth', 'verified'])->name('admin.categories.delete');
+    Route::get('/categories/edit/{id}', [CategoryController::class, 'edit'])->middleware(['auth', 'verified'])->name('admin.categories.edit');
+    Route::post('/categories/update/{id}', [CategoryController::class, 'update'])->middleware(['auth', 'verified'])->name('admin.categories.update');
+});
+// Route::post('/store', [TodoController::class, 'store'])->name('todo.store');
 Route::get('/admin/products', function () {
     return view('admin.products');
 })->middleware(['auth', 'verified'])->name('admin.products');
+
 
 Route::get('/admin/users', function () {
     return view('admin.users');
