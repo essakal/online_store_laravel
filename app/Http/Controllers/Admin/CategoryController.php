@@ -14,7 +14,7 @@ class CategoryController extends Controller
     public function index()
     {
         $data = Category::select('id', 'name')->orderBy('id', 'desc')->get();
-        return view('admin.categories', ['data'=>$data]);
+        return view('admin.category.categories', ['data'=>$data]);
     }
 
     /**
@@ -56,7 +56,7 @@ class CategoryController extends Controller
     public function edit(string $id)
     {
         $data = Category::select('*')->find($id);
-        return view("admin.editcategories", ['data'=>$data]);
+        return view("admin.category.editcategories", ['data'=>$data]);
     }
 
     /**

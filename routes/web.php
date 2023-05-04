@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ProductController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,6 +22,7 @@ Route::get('/', function () {
 // Route::get('/admin/categories', function () {
 //     return view('admin.categories');
 // })->middleware(['auth', 'verified'])->name('admin.categories');
+
 Route::group(["prefix" => "admin", "middleware" => ["auth", "verified"]], function () {
     Route::get('/categories/index', [CategoryController::class, 'index'])->name('admin.categories.index');
     Route::post('/categories/store', [CategoryController::class, 'store'])->name('admin.categories.store');
@@ -28,10 +30,11 @@ Route::group(["prefix" => "admin", "middleware" => ["auth", "verified"]], functi
     Route::get('/categories/edit/{id}', [CategoryController::class, 'edit'])->name('admin.categories.edit');
     Route::post('/categories/update/{id}', [CategoryController::class, 'update'])->name('admin.categories.update');
 });
-// Route::post('/store', [TodoController::class, 'store'])->name('todo.store');
-Route::get('/admin/products', function () {
-    return view('admin.products');
-})->middleware(['auth', 'verified'])->name('admin.products');
+
+Route::group(["prefix" => "admin", "middleware" => ["auth", "verified"]], function () {
+    Route::get('/products/create', [ProductController::class, 'create'])->name('admin.products.create');
+    Route::post('/products/store', [ProductController::class, 'store'])->name('admin.products.store');
+});
 
 
 Route::get('/admin/users', function () {
