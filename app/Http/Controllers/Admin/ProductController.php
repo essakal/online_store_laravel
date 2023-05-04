@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Produit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -14,7 +15,12 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $dd = Produit::get();
+        $dd = DB::table('products')
+            ->join('categories', 'products.category_id', '=', 'categories.id')
+            ->select('products.*', 'categories.name as category')
+            ->orderByDesc('id')
+            ->get();
+        // $dd = Produit::get();
         // return view('admin.product.index');
         return view('admin.product.index', ["dd" => $dd]);
     }
@@ -56,7 +62,7 @@ class ProductController extends Controller
         $data['created_at'] = date('Y-m-d H:i:s');
         Produit::create($data);
 
-        return redirect()->route('admin.products.index');
+        return redirect()->route('admin.products.index')->with('success','product has been created successfully.');
 
     }
 
@@ -73,7 +79,8 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $data = Produit::select('*')->find($id);
+        return view("admin.product.edit", ['data'=>$data]);
     }
 
     /**
@@ -89,6 +96,9 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Produit::where('id', $id)->delete();
+        return redirect()->route('admin.products.index')->with('success','product has been deleted successfully.');
+    
+    
     }
 }
