@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
@@ -13,7 +14,22 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $data = Category::select('id', 'name')->orderBy('id', 'desc')->get();
+        // $data = Category::select('id', 'name')->orderBy('id', 'desc')->get();
+        // $data = Category::select('id', 'name')
+        //         ->withCount('produits')
+        //         ->orderBy('id', 'desc')
+        //         ->get();
+        // $data = DB::table('categories')
+        //     ->join('products', 'products.category_id', '=', 'categories.id')
+        //     ->select('products.*', 'categories.name as category')
+        //     ->orderByDesc('id')
+        //     ->get();
+        $data = DB::table('categories as c')
+        ->leftJoin('products as p', 'c.id', '=', 'p.category_id')
+        ->select('c.id', 'c.name', DB::raw('COUNT(p.id) as count'))
+        ->groupBy('c.id', 'c.name')
+        ->orderByDesc('id')
+        ->get();
         return view('admin.category.categories', ['data'=>$data]);
     }
 

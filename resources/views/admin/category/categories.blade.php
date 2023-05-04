@@ -35,7 +35,10 @@
                         Category
                     </th>
                     <th scope="col" class="px-6 py-3 text-center">
-                        action
+                        count
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-center">
+                        actions
                     </th>
                 </tr>
             </thead>
@@ -44,6 +47,9 @@
                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{ $d->name }}
+                        </th>
+                        <th scope="row" class="text-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            {{ $d->count }}
                         </th>
                         <td class="px-6 py-4 text-center">
                             <a href="{{ route('admin.categories.edit', $d->id) }}"
