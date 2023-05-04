@@ -62,7 +62,7 @@ class ProductController extends Controller
         $data['created_at'] = date('Y-m-d H:i:s');
         Produit::create($data);
 
-        return redirect()->route('admin.products.index')->with('success','product has been created successfully.');
+        return redirect()->route('admin.products.index')->with('success', 'product has been created successfully.');
 
     }
 
@@ -80,7 +80,8 @@ class ProductController extends Controller
     public function edit(string $id)
     {
         $data = Produit::select('*')->find($id);
-        return view("admin.product.edit", ['data'=>$data]);
+        $cat = Category::get();
+        return view("admin.product.edit", ['data' => $data, 'cat' => $cat]);
     }
 
     /**
@@ -88,7 +89,31 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'description' => 'required',
+            // 'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'prix' => 'required|numeric|min:0.01',
+            'quantite' => 'required|integer|min:0',
+            'category' => 'required|integer|min:1'
+        ]);
+
+        if ($request->file('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->extension();
+            $image->storeAs('public/images', $imageName);
+            $data['image'] = $image->storeAs($imageName);
+        }
+
+        $data['name'] = $request->name;
+        $data['description'] = $request->description;
+        $data['prix'] = $request->prix;
+        $data['quantité'] = $request->quantite;
+        $data['category_id'] = $request->category;
+        $data['updated_at'] = date('Y-m-d H:i:s');
+        Produit::where('id', $id)->update($data);
+        return redirect()->route("admin.products.index")->with('success', 'product has been edited successfully.');
+
     }
 
     /**
@@ -97,8 +122,6 @@ class ProductController extends Controller
     public function destroy(string $id)
     {
         Produit::where('id', $id)->delete();
-        return redirect()->route('admin.products.index')->with('success','product has been deleted successfully.');
-    
-    
+        return redirect()->route('admin.products.index')->with('success', 'product has been deleted successfully.');
     }
 }
