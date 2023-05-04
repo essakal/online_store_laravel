@@ -32,6 +32,7 @@ Route::group(["prefix" => "admin", "middleware" => ["auth", "verified"]], functi
 });
 
 Route::group(["prefix" => "admin", "middleware" => ["auth", "verified"]], function () {
+    Route::get('/products/index', [ProductController::class, 'index'])->name('admin.products.index');
     Route::get('/products/create', [ProductController::class, 'create'])->name('admin.products.create');
     Route::post('/products/store', [ProductController::class, 'store'])->name('admin.products.store');
 });

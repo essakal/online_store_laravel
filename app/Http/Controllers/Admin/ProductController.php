@@ -14,7 +14,9 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        $dd = Produit::get();
+        // return view('admin.product.index');
+        return view('admin.product.index', ["dd" => $dd]);
     }
 
     /**
@@ -33,6 +35,7 @@ class ProductController extends Controller
     {
         $request->validate([
             'name' => 'required',
+            'description' => 'required',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'prix' => 'required|numeric|min:0.01',
             'quantite' => 'required|integer|min:0',
@@ -44,7 +47,7 @@ class ProductController extends Controller
         $image->storeAs('public/images', $imageName);
 
         $data['name'] = $request->name;
-        $data['description'] = $request->name;
+        $data['description'] = $request->description;
         $data['image'] = $image->storeAs($imageName);
         $data['prix'] = $request->prix;
         $data['quantité'] = $request->quantite;
@@ -53,7 +56,7 @@ class ProductController extends Controller
         $data['created_at'] = date('Y-m-d H:i:s');
         Produit::create($data);
 
-        return dd($data);
+        return redirect()->route('admin.products.index');
 
     }
 
