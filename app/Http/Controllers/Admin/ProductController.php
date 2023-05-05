@@ -7,6 +7,9 @@ use App\Models\Category;
 use App\Models\Produit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Exports\UsersExport;
+use App\Imports\UsersImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProductController extends Controller
 {
@@ -123,5 +126,10 @@ class ProductController extends Controller
     {
         Produit::where('id', $id)->delete();
         return redirect()->route('admin.products.index')->with('success', 'product has been deleted successfully.');
+    }
+
+    public function export() 
+    {
+        return Excel::download(new UsersExport, 'users.xlsx');
     }
 }
