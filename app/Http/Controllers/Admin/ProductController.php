@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Exports\ProductExport;
 use App\Http\Controllers\Controller;
+use App\Imports\ProductImport;
 use App\Models\Category;
 use App\Models\Produit;
 use Illuminate\Http\Request;
@@ -130,5 +131,11 @@ class ProductController extends Controller
     public function export() 
     {
         return Excel::download(new ProductExport, 'users.xlsx');
+    }
+    public function import() 
+    {
+        Excel::import(new ProductImport ,request()->file('file'));
+
+        return redirect()->route('admin.products.index')->with('success', 'Products have been uploaded successfully.');
     }
 }

@@ -39,6 +39,7 @@ Route::group(["prefix" => "admin", "middleware" => ["auth", "verified"]], functi
     Route::get('/products/edit/{id}', [ProductController::class, 'edit'])->name('admin.products.edit');
     Route::post('/products/update/{id}', [ProductController::class, 'update'])->name('admin.products.update');
     Route::get('/users-export', [ProductController::class, 'export'])->name('users.export');
+    Route::post('/users-import', [ProductController::class, 'import'])->name('users.import');
 });
 
 
