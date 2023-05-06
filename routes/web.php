@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\client\ProduitController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,8 +18,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    // return view('welcome');
+    return ('welcome');
 })->name('welcome');
+
+// Route::get('/client/produit', function () {
+//     return view('client.produit');
+// })->name('test');
 
 // Route::get('/admin/categories', function () {
 //     return view('admin.categories');
@@ -42,6 +48,7 @@ Route::group(["prefix" => "admin", "middleware" => ["auth", "verified"]], functi
     Route::get('/users-export', [ProductController::class, 'export'])->name('users.export');
     Route::post('/users-import', [ProductController::class, 'import'])->name('users.import');
 });
+
 Route::group(["prefix" => "admin", "middleware" => ["auth", "verified"]], function () {
     Route::get('/users/index', [UserController::class, 'index'])->name('admin.users.index');
     // Route::get('/products/create', [ProductController::class, 'create'])->name('admin.products.create');
@@ -53,6 +60,13 @@ Route::group(["prefix" => "admin", "middleware" => ["auth", "verified"]], functi
     // Route::post('/users-import', [ProductController::class, 'import'])->name('users.import');
 });
 
+Route::group(["prefix" => "client", "middleware" => ["auth", "verified"]], function () {
+    Route::get('/produit/index', [ProduitController::class, 'index'])->name('client.produit.index');
+    Route::get('/produit/show/{id}', [ProduitController::class, 'show'])->name('client.produit.show');
+});
+// Route::get('/client/produit', function () {
+//     return view('client.produit');
+// })->name('test');
 
 // Route::get('/admin/users', function () {
 //     return view('admin.users');
