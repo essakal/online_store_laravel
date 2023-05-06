@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -41,11 +42,21 @@ Route::group(["prefix" => "admin", "middleware" => ["auth", "verified"]], functi
     Route::get('/users-export', [ProductController::class, 'export'])->name('users.export');
     Route::post('/users-import', [ProductController::class, 'import'])->name('users.import');
 });
+Route::group(["prefix" => "admin", "middleware" => ["auth", "verified"]], function () {
+    Route::get('/users/index', [UserController::class, 'index'])->name('admin.users.index');
+    // Route::get('/products/create', [ProductController::class, 'create'])->name('admin.products.create');
+    // Route::post('/products/store', [ProductController::class, 'store'])->name('admin.products.store');
+    // Route::get('/products/delete/{id}', [ProductController::class, 'destroy'])->name('admin.products.delete');
+    Route::get('/users/edit/{id}', [UserController::class, 'edit'])->name('admin.users.edit');
+    Route::post('/users/update/{id}', [UserController::class, 'update'])->name('admin.users.update');
+    // Route::get('/users-export', [ProductController::class, 'export'])->name('users.export');
+    // Route::post('/users-import', [ProductController::class, 'import'])->name('users.import');
+});
 
 
-Route::get('/admin/users', function () {
-    return view('admin.users');
-})->middleware(['auth', 'verified'])->name('admin.users');
+// Route::get('/admin/users', function () {
+//     return view('admin.users');
+// })->middleware(['auth', 'verified'])->name('admin.users');
 
 // Route::get('/users', function () {
 //     return view('welcome');
