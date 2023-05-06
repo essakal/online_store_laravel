@@ -8,6 +8,7 @@ use App\Imports\ProductImport;
 use App\Models\Category;
 use App\Models\Produit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -18,14 +19,19 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $dd = DB::table('products')
-            ->join('categories', 'products.category_id', '=', 'categories.id')
-            ->select('products.*', 'categories.name as category')
-            ->orderByDesc('id')
-            ->get();
-        // $dd = Produit::get();
-        // return view('admin.product.index');
-        return view('admin.product.index', ["dd" => $dd]);
+        $user = Auth::user();
+        if ($user->is_blocked) {
+            return view('blocked.index');
+        } else {
+            $dd = DB::table('products')
+                ->join('categories', 'products.category_id', '=', 'categories.id')
+                ->select('products.*', 'categories.name as category')
+                ->orderByDesc('id')
+                ->get();
+            // $dd = Produit::get();
+            // return view('admin.product.index');
+            return view('admin.product.index', ["dd" => $dd]);
+        }
     }
 
     /**
@@ -33,8 +39,13 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $data = $check = Category::get();
-        return view('admin.product.create', ['data' => $data]);
+        $user = Auth::user();
+        if ($user->is_blocked) {
+            return view('blocked.index');
+        } else {
+            $data = Category::get();
+            return view('admin.product.create', ['data' => $data]);
+        }
     }
 
     /**
@@ -42,31 +53,36 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required',
-            'description' => 'required',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'prix' => 'required|numeric|min:0.01',
-            'quantite' => 'required|integer|min:0',
-            'category' => 'required|integer|min:1'
-        ]);
+        $user = Auth::user();
+        if ($user->is_blocked) {
+            return view('blocked.index');
+        } else {
 
-        $image = $request->file('image');
-        $imageName = time() . '.' . $image->extension();
-        $image->storeAs('public/images', $imageName);
+            $request->validate([
+                'name' => 'required',
+                'description' => 'required',
+                'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'prix' => 'required|numeric|min:0.01',
+                'quantite' => 'required|integer|min:0',
+                'category' => 'required|integer|min:1'
+            ]);
 
-        $data['name'] = $request->name;
-        $data['description'] = $request->description;
-        $data['image'] = $image->storeAs($imageName);
-        $data['prix'] = $request->prix;
-        $data['quantité'] = $request->quantite;
-        $data['category_id'] = $request->category;
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->extension();
+            $image->storeAs('public/images', $imageName);
 
-        $data['created_at'] = date('Y-m-d H:i:s');
-        Produit::create($data);
+            $data['name'] = $request->name;
+            $data['description'] = $request->description;
+            $data['image'] = $image->storeAs($imageName);
+            $data['prix'] = $request->prix;
+            $data['quantité'] = $request->quantite;
+            $data['category_id'] = $request->category;
 
-        return redirect()->route('admin.products.index')->with('success', 'product has been created successfully.');
+            $data['created_at'] = date('Y-m-d H:i:s');
+            Produit::create($data);
 
+            return redirect()->route('admin.products.index')->with('success', 'product has been created successfully.');
+        }
     }
 
     /**
@@ -82,9 +98,14 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        $data = Produit::select('*')->find($id);
-        $cat = Category::get();
-        return view("admin.product.edit", ['data' => $data, 'cat' => $cat]);
+        $user = Auth::user();
+        if ($user->is_blocked) {
+            return view('blocked.index');
+        } else {
+            $data = Produit::select('*')->find($id);
+            $cat = Category::get();
+            return view("admin.product.edit", ['data' => $data, 'cat' => $cat]);
+        }
     }
 
     /**
@@ -92,30 +113,35 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $request->validate([
-            'name' => 'required',
-            'description' => 'required',
-            // 'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'prix' => 'required|numeric|min:0.01',
-            'quantite' => 'required|integer|min:0',
-            'category' => 'required|integer|min:1'
-        ]);
+        $user = Auth::user();
+        if ($user->is_blocked) {
+            return view('blocked.index');
+        } else {
+            $request->validate([
+                'name' => 'required',
+                'description' => 'required',
+                // 'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'prix' => 'required|numeric|min:0.01',
+                'quantite' => 'required|integer|min:0',
+                'category' => 'required|integer|min:1'
+            ]);
 
-        if ($request->file('image')) {
-            $image = $request->file('image');
-            $imageName = time() . '.' . $image->extension();
-            $image->storeAs('public/images', $imageName);
-            $data['image'] = $image->storeAs($imageName);
+            if ($request->file('image')) {
+                $image = $request->file('image');
+                $imageName = time() . '.' . $image->extension();
+                $image->storeAs('public/images', $imageName);
+                $data['image'] = $image->storeAs($imageName);
+            }
+
+            $data['name'] = $request->name;
+            $data['description'] = $request->description;
+            $data['prix'] = $request->prix;
+            $data['quantité'] = $request->quantite;
+            $data['category_id'] = $request->category;
+            $data['updated_at'] = date('Y-m-d H:i:s');
+            Produit::where('id', $id)->update($data);
+            return redirect()->route("admin.products.index")->with('success', 'product has been edited successfully.');
         }
-
-        $data['name'] = $request->name;
-        $data['description'] = $request->description;
-        $data['prix'] = $request->prix;
-        $data['quantité'] = $request->quantite;
-        $data['category_id'] = $request->category;
-        $data['updated_at'] = date('Y-m-d H:i:s');
-        Produit::where('id', $id)->update($data);
-        return redirect()->route("admin.products.index")->with('success', 'product has been edited successfully.');
 
     }
 
@@ -124,18 +150,32 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        Produit::where('id', $id)->delete();
-        return redirect()->route('admin.products.index')->with('success', 'product has been deleted successfully.');
+        $user = Auth::user();
+        if ($user->is_blocked) {
+            return view('blocked.index');
+        } else {
+            Produit::where('id', $id)->delete();
+            return redirect()->route('admin.products.index')->with('success', 'product has been deleted successfully.');
+        }
     }
 
-    public function export() 
+    public function export()
     {
-        return Excel::download(new ProductExport, 'users.xlsx');
+        $user = Auth::user();
+        if ($user->is_blocked) {
+            return view('blocked.index');
+        } else {
+            return Excel::download(new ProductExport, 'users.xlsx');
+        }
     }
-    public function import() 
+    public function import()
     {
-        Excel::import(new ProductImport ,request()->file('file'));
-
-        return redirect()->route('admin.products.index')->with('success', 'Products have been uploaded successfully.');
+        $user = Auth::user();
+        if ($user->is_blocked) {
+            return view('blocked.index');
+        } else {
+            Excel::import(new ProductImport, request()->file('file'));
+            return redirect()->route('admin.products.index')->with('success', 'Products have been uploaded successfully.');
+        }
     }
 }
