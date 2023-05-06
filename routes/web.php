@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\client\ProduitController;
+use App\Http\Controllers\guest\ProduitguestController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -64,17 +65,15 @@ Route::group(["prefix" => "client", "middleware" => ["auth", "verified"]], funct
     Route::get('/produit/index', [ProduitController::class, 'index'])->name('client.produit.index');
     Route::get('/produit/show/{id}', [ProduitController::class, 'show'])->name('client.produit.show');
 });
-// Route::get('/client/produit', function () {
-//     return view('client.produit');
-// })->name('test');
 
-// Route::get('/admin/users', function () {
-//     return view('admin.users');
-// })->middleware(['auth', 'verified'])->name('admin.users');
+Route::group(["prefix" => "guest"], function () {
+    Route::get('/produit/index', [ProduitguestController::class, 'index'])->name('guest.produit.index');
+    Route::get('/produit/show/{id}', [ProduitguestController::class, 'show'])->name('guest.produit.show');
+    Route::get('/produit/cart/{id}', [ProduitguestController::class, 'cart'])->name('guest.produit.cart');
+    Route::get('/produit/category/{id}', [ProduitguestController::class, 'category'])->name('guest.produit.category');
+    Route::get('/test', [ProduitguestController::class, 'test'])->name('guest.produit.cart');
+});
 
-// Route::get('/users', function () {
-//     return view('welcome');
-// })->name('users');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

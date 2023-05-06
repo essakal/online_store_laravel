@@ -20,10 +20,8 @@ class ProductImport implements ToModel, WithHeadingRow
         $category = Category::where('name', $row['category'])->first();
 
         if ($category) {
-            // if category exists, set its ID in the 'category_id' field of the Product
             $category_id = $category->id;
         } else {
-            // if category does not exist, create a new Category record and set its ID in the 'category_id' field of the Product
             $category = new Category([
                 'name' => $row['category']
             ]);
