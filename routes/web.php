@@ -71,6 +71,8 @@ Route::group(["prefix" => "guest"], function () {
     Route::get('/produit/show/{id}', [ProduitguestController::class, 'show'])->name('guest.produit.show');
     Route::get('/produit/cart/{id}', [ProduitguestController::class, 'cart'])->name('guest.produit.cart');
     Route::get('/produit/category/{id}', [ProduitguestController::class, 'category'])->name('guest.produit.category');
+    Route::get('/produit/search', [ProduitguestController::class, 'search'])->name('guest.produit.search');
+    Route::get('/produit/filter', [ProduitguestController::class, 'filter'])->name('guest.produit.filter');
     Route::get('/test', [ProduitguestController::class, 'test'])->name('guest.produit.cart');
 });
 

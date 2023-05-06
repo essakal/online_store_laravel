@@ -16,50 +16,78 @@
                             href="{{ route('guest.produit.index') }}" data-te-nav-link-ref>Home</a>
                     </li>
                     <!-- Team link -->
-                    <li class="mb-4 lg:mb-0 lg:pr-2" data-te-nav-item-ref>
+                    {{-- <li class="mb-4 lg:mb-0 lg:pr-2" data-te-nav-item-ref>
                         <a class="text-neutral-500 hover:text-neutral-700 focus:text-neutral-700 disabled:text-black/30 dark:text-neutral-200 dark:hover:text-neutral-300 dark:focus:text-neutral-300 lg:px-2 [&.active]:text-black/90 dark:[&.active]:text-neutral-400"
                             href="#" data-te-nav-link-ref>Team</a>
-                    </li>
+                    </li> --}}
                 </ul>
             </div>
             {{-- categories  --}}
-            <ul class="mr-auto flex flex-row" data-te-navbar-nav-ref>
-                <li class="static" data-te-nav-item-ref data-te-dropdown-ref>
-                    <a class="flex items-center whitespace-nowrap py-2 pr-2  transition duration-150 ease-in-out hover:text-neutral-700 focus:text-neutral-700 dark:hover:text-white dark:focus:text-white lg:px-2"
-                        href="#" data-te-ripple-init data-te-ripple-color="light" type="button"
-                        id="dropdownMenuButtonX" data-te-dropdown-toggle-ref aria-expanded="false"
-                        data-te-nav-link-ref>categories
-                        <span class="ml-2 w-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                                class="h-5 w-5">
-                                <path fill-rule="evenodd"
-                                    d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                        </span>
-                    </a>
-                    <div class="absolute left-0 right-0 top-full z-[1000] mt-0 hidden w-full border-none bg-white bg-clip-padding text-neutral-600 shadow-lg dark:bg-neutral-700 dark:text-neutral-200 [&[data-te-dropdown-show]]:block"
-                        aria-labelledby="dropdownMenuButtonX" data-te-dropdown-menu-ref>
-                        <div class="px-6 py-5 lg:px-8">
-                            <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-                                <div>
-                                    @yield('categories')
-                                    {{-- <a href="#!" aria-current="true"
-                                        class="block w-full border-b border-neutral-200 px-6 py-2 transition duration-150 ease-in-out hover:bg-neutral-50 hover:text-neutral-700 dark:border-neutral-500 dark:hover:bg-neutral-800 dark:hover:text-white">
-                                        Lorem ipsum
-                                    </a>
-                                    <a href="#!" aria-current="true"
-                                        class="block w-full border-b border-neutral-200 px-6 py-2 transition duration-150 ease-in-out hover:bg-neutral-50 hover:text-neutral-700 dark:border-neutral-500 dark:hover:bg-neutral-800 dark:hover:text-white">
-                                        Lorem ipsum
-                                    </a> --}}
+            <div>
+                <ul class="mr-auto flex flex-row" data-te-navbar-nav-ref>
+                    <li class="static" data-te-nav-item-ref data-te-dropdown-ref>
+                        <a class="flex items-center whitespace-nowrap py-2 pr-2  transition duration-150 ease-in-out hover:text-neutral-700 focus:text-neutral-700 dark:hover:text-white dark:focus:text-white lg:px-2"
+                            href="#" data-te-ripple-init data-te-ripple-color="light" type="button"
+                            id="dropdownMenuButtonX" data-te-dropdown-toggle-ref aria-expanded="false"
+                            data-te-nav-link-ref>categories
+                            <span class="ml-2 w-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                                    class="h-5 w-5">
+                                    <path fill-rule="evenodd"
+                                        d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </span>
+                        </a>
+                        <div class="absolute left-0 right-0 top-full z-[1000] mt-0 hidden w-full border-none bg-white bg-clip-padding text-neutral-600 shadow-lg dark:bg-neutral-700 dark:text-neutral-200 [&[data-te-dropdown-show]]:block"
+                            aria-labelledby="dropdownMenuButtonX" data-te-dropdown-menu-ref>
+                            <div class="px-6 py-5 lg:px-8">
+                                <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+                                    <div>
+                                        @yield('categories')
+                                        {{-- <a href="#!" aria-current="true"
+                                            class="block w-full border-b border-neutral-200 px-6 py-2 transition duration-150 ease-in-out hover:bg-neutral-50 hover:text-neutral-700 dark:border-neutral-500 dark:hover:bg-neutral-800 dark:hover:text-white">
+                                            Lorem ipsum
+                                        </a>
+                                        <a href="#!" aria-current="true"
+                                            class="block w-full border-b border-neutral-200 px-6 py-2 transition duration-150 ease-in-out hover:bg-neutral-50 hover:text-neutral-700 dark:border-neutral-500 dark:hover:bg-neutral-800 dark:hover:text-white">
+                                            Lorem ipsum
+                                        </a> --}}
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </li>
-            </ul>
-        </div>
+                    </li>
+                </ul>
+            </div>
+            {{-- search  --}}
+            <div class="mx-8">
+                <form action="{{route('guest.produit.search')}}" class="relative flex w-full flex-wrap items-stretch">
+                    <input type="search" name="search"
+                        class="relative w-72 m-0 -mr-0.5 block min-w-0 flex-auto rounded-l border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-700 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary"
+                        placeholder="Search" aria-label="Search" aria-describedby="button-addon3" />
 
+                    <button type="submit"
+                        class="relative z-[2] rounded-r border-2 border-primary px-6 py-2 text-xs font-medium uppercase text-primary transition duration-150 ease-in-out hover:bg-black hover:bg-opacity-5 focus:outline-none focus:ring-0"
+                        type="button" id="button-addon3" data-te-ripple-init>
+                        Search
+                    </button>
+                </form>
+            </div>
+            {{-- price range --}}
+            
+            <form class="" action="{{route('guest.produit.filter')}}">
+                {{-- <label for="min-price" class="font-bold">Min Price</label> --}}
+                <input type="number" id="min-price" name="min-price" class="border rounded-lg py-1 px-2" min="0" step="0.01" placeholder="min price">
+              
+                {{-- <label for="max-price" class="font-bold">Max Price</label> --}}
+                <input type="number" id="max-price" name="max-price" class="border rounded-lg py-1 px-2" min="0" step="0.01" placeholder="max price">
+              
+                <button type="submit" class="bg-blue-500 text-white rounded-lg py-1 px-4 hover:bg-blue-600">Filter</button>
+              </form>
+              
+
+        </div>
         <!-- Right elements -->
         <div class="relative flex items-center">
             <!-- Cart Icon -->

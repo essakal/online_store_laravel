@@ -125,6 +125,43 @@ class ProduitguestController extends Controller
         // return dd($dd);
         return view('guest.category', ['dd' => $dd, 'cat' => $cat]);
     }
+    public function search(Request $request)
+    {
+        $dd = DB::table('products')
+            ->join('categories', 'products.category_id', '=', 'categories.id')
+            ->select('products.*', 'categories.name as category')
+            ->where('products.name', 'like', '%' . $request->search . '%')
+            ->orderByDesc('id')
+            ->get();
+
+        $cat = DB::table('categories as c')
+            ->leftJoin('products as p', 'c.id', '=', 'p.category_id')
+            ->select('c.id', 'c.name', DB::raw('COUNT(p.id) as count'))
+            ->groupBy('c.id', 'c.name')
+            ->orderByDesc('count')
+            ->get();
+
+        return view('guest.search', ["dd" => $dd, "cat" => $cat, "search" => $request->search]);
+    }
+    public function filter(Request $request)
+    {
+        $dd = DB::table('products')
+            ->join('categories', 'products.category_id', '=', 'categories.id')
+            ->select('products.*', 'categories.name as category')
+            // ->where('products.name', 'like', '%' . $request->search . '%')
+            ->whereBetween('products.prix', [$request["min-price"], $request["max-price"]])
+            ->orderByDesc('id')
+            ->get();
+
+        $cat = DB::table('categories as c')
+            ->leftJoin('products as p', 'c.id', '=', 'p.category_id')
+            ->select('c.id', 'c.name', DB::raw('COUNT(p.id) as count'))
+            ->groupBy('c.id', 'c.name')
+            ->orderByDesc('count')
+            ->get();
+        // return $request;
+        return view('guest.filter', ["dd" => $dd, "cat" => $cat, "min"=>$request["min-price"],"max"=> $request["max-price"] ]);
+    }
     public function test()
     {
         $myArray = json_decode(request()->cookie('cart'), true);
