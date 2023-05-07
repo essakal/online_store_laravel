@@ -62,7 +62,7 @@
             </div>
             {{-- search  --}}
             <div class="mx-8">
-                <form action="{{route('guest.produit.search')}}" class="relative flex w-full flex-wrap items-stretch">
+                <form action="{{ route('guest.produit.search') }}" class="relative flex w-full flex-wrap items-stretch">
                     <input type="search" name="search"
                         class="relative w-72 m-0 -mr-0.5 block min-w-0 flex-auto rounded-l border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-700 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary"
                         placeholder="Search" aria-label="Search" aria-describedby="button-addon3" />
@@ -75,24 +75,27 @@
                 </form>
             </div>
             {{-- price range --}}
-            
-            <form class="" action="{{route('guest.produit.filter')}}">
+
+            <form class="" action="{{ route('guest.produit.filter') }}">
                 {{-- <label for="min-price" class="font-bold">Min Price</label> --}}
-                <input type="number" id="min-price" name="min-price" class="border rounded-lg py-1 px-2" min="0" step="0.01" placeholder="min price">
-              
+                <input type="number" id="min-price" name="min-price" class="border rounded-lg py-1 px-2" min="0"
+                    step="0.01" placeholder="min price">
+
                 {{-- <label for="max-price" class="font-bold">Max Price</label> --}}
-                <input type="number" id="max-price" name="max-price" class="border rounded-lg py-1 px-2" min="0" step="0.01" placeholder="max price">
-              
-                <button type="submit" class="bg-blue-500 text-white rounded-lg py-1 px-4 hover:bg-blue-600">Filter</button>
-              </form>
-              
+                <input type="number" id="max-price" name="max-price" class="border rounded-lg py-1 px-2" min="0"
+                    step="0.01" placeholder="max price">
+
+                <button type="submit"
+                    class="bg-blue-500 text-white rounded-lg py-1 px-4 hover:bg-blue-600">Filter</button>
+            </form>
+
 
         </div>
         <!-- Right elements -->
         <div class="relative flex items-center">
             <!-- Cart Icon -->
             <a class="mr-4 text-neutral-500 hover:text-neutral-700 focus:text-neutral-700 disabled:text-black/30 dark:text-neutral-200 dark:hover:text-neutral-300 dark:focus:text-neutral-300 [&.active]:text-black/90 dark:[&.active]:text-neutral-400"
-                href="#">
+                href="{{route('guest.produit.shopping')}}">
                 <span class="[&>svg]:w-5">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5">
                         <path
@@ -131,51 +134,15 @@
                         <a class="block w-full whitespace-nowrap bg-transparent px-4 py-2 text-sm font-normal text-neutral-700 hover:bg-neutral-100 active:text-neutral-800 active:no-underline disabled:pointer-events-none disabled:bg-transparent disabled:text-neutral-400 dark:text-neutral-200 dark:hover:bg-white/30"
                             href="#" data-te-dropdown-item-ref>notification 2</a>
                     </li>
-                    {{-- <li>
-                        <a class="block w-full whitespace-nowrap bg-transparent px-4 py-2 text-sm font-normal text-neutral-700 hover:bg-neutral-100 active:text-neutral-800 active:no-underline disabled:pointer-events-none disabled:bg-transparent disabled:text-neutral-400 dark:text-neutral-200 dark:hover:bg-white/30"
-                            href="#" data-te-dropdown-item-ref>Another action</a>
-                    </li>
-                    <li>
-                        <a class="block w-full whitespace-nowrap bg-transparent px-4 py-2 text-sm font-normal text-neutral-700 hover:bg-neutral-100 active:text-neutral-800 active:no-underline disabled:pointer-events-none disabled:bg-transparent disabled:text-neutral-400 dark:text-neutral-200 dark:hover:bg-white/30"
-                            href="#" data-te-dropdown-item-ref>Something else here</a>
-                    </li> --}}
                 </ul>
             </div>
 
             <!-- Second dropdown container -->
             <div class="relative" data-te-dropdown-ref>
-                <!-- Second dropdown trigger -->
-                <a class="hidden-arrow flex items-center whitespace-nowrap transition duration-150 ease-in-out motion-reduce:transition-none"
-                    href="#" id="dropdownMenuButton2" role="button" data-te-dropdown-toggle-ref
-                    aria-expanded="false">
-                    <!-- User avatar -->
-                    <img src="https://tecdn.b-cdn.net/img/new/avatars/2.jpg" class="rounded-full"
-                        style="height: 25px; width: 25px" alt="" loading="lazy" />
+                <a href="{{ route('login') }}"
+                    class="mr-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    login
                 </a>
-                <!-- Second dropdown menu -->
-                <ul class="absolute left-auto right-0 z-[1000] float-left m-0 mt-1 hidden min-w-max list-none overflow-hidden rounded-lg border-none bg-white bg-clip-padding text-left text-base shadow-lg dark:bg-neutral-700 [&[data-te-dropdown-show]]:block"
-                    aria-labelledby="dropdownMenuButton2" data-te-dropdown-menu-ref>
-                    <!-- Second dropdown menu items -->
-                    <li>
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <a href="{{ route('logout') }}"
-                                class="block w-full whitespace-nowrap bg-transparent px-4 py-2 text-sm font-normal text-neutral-700 hover:bg-neutral-100 active:text-neutral-800 active:no-underline disabled:pointer-events-none disabled:bg-transparent disabled:text-neutral-400 dark:text-neutral-200 dark:hover:bg-white/30"
-                                onclick="event.preventDefault();
-                                                this.closest('form').submit();">
-                                {{ __('Log Out') }}
-                            </a>
-                        </form>
-                    </li>
-                    {{-- <li>
-                        <a class="block w-full whitespace-nowrap bg-transparent px-4 py-2 text-sm font-normal text-neutral-700 hover:bg-neutral-100 active:text-neutral-800 active:no-underline disabled:pointer-events-none disabled:bg-transparent disabled:text-neutral-400 dark:text-neutral-200 dark:hover:bg-white/30"
-                            href="#" data-te-dropdown-item-ref>Another action</a>
-                    </li>
-                    <li>
-                        <a class="block w-full whitespace-nowrap bg-transparent px-4 py-2 text-sm font-normal text-neutral-700 hover:bg-neutral-100 active:text-neutral-800 active:no-underline disabled:pointer-events-none disabled:bg-transparent disabled:text-neutral-400 dark:text-neutral-200 dark:hover:bg-white/30"
-                            href="#" data-te-dropdown-item-ref>Something else here</a>
-                    </li> --}}
-                </ul>
             </div>
         </div>
     </div>

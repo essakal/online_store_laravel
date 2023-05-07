@@ -73,7 +73,7 @@ Route::group(["prefix" => "guest"], function () {
     Route::get('/produit/category/{id}', [ProduitguestController::class, 'category'])->name('guest.produit.category');
     Route::get('/produit/search', [ProduitguestController::class, 'search'])->name('guest.produit.search');
     Route::get('/produit/filter', [ProduitguestController::class, 'filter'])->name('guest.produit.filter');
-    Route::get('/test', [ProduitguestController::class, 'test'])->name('guest.produit.cart');
+    Route::get('/produit/shopping', [ProduitguestController::class, 'shopping'])->name('guest.produit.shopping');
 });
 
 

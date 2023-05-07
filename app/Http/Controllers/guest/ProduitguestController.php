@@ -160,12 +160,32 @@ class ProduitguestController extends Controller
             ->orderByDesc('count')
             ->get();
         // return $request;
-        return view('guest.filter', ["dd" => $dd, "cat" => $cat, "min"=>$request["min-price"],"max"=> $request["max-price"] ]);
+        return view('guest.filter', ["dd" => $dd, "cat" => $cat, "min" => $request["min-price"], "max" => $request["max-price"]]);
     }
-    public function test()
+    public function shopping()
     {
         $myArray = json_decode(request()->cookie('cart'), true);
-        return dd($myArray);
+        $products = Produit::whereIn('id', $myArray)->get();
+        $counts = array_count_values($myArray);
+        // for ($i = 0; $i < count($products); $i++) {
+        //     foreach ($counts as $k => $v) {
+        //         if ($products[$i]->id == $k) {
+        //             $products->count = $v;
+        //         }
+        //     }
+        // }
+        for ($i = 0; $i < count($products); $i++) {
+            foreach ($counts as $k => $v) {
+                if ($products[$i]->id == $k) {
+                    $products[$i]->count = $v;
+                }
+            }
+        }
+        // print_r($products);
+        // print_r($counts);
+        // return dd($products);
+        return view('guest.shopping', ["cart"=>$products]);
     }
+
 
 }
