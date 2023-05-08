@@ -64,6 +64,9 @@ Route::group(["prefix" => "admin", "middleware" => ["auth", "verified"]], functi
 Route::group(["prefix" => "client", "middleware" => ["auth", "verified"]], function () {
     Route::get('/produit/index', [ProduitController::class, 'index'])->name('client.produit.index');
     Route::get('/produit/show/{id}', [ProduitController::class, 'show'])->name('client.produit.show');
+    Route::get('/produit/category/{id}', [ProduitController::class, 'category'])->name('client.produit.category');
+    Route::get('/produit/search', [ProduitController::class, 'search'])->name('client.produit.search');
+    Route::get('/produit/filter', [ProduitController::class, 'filter'])->name('client.produit.filter');
 });
 
 Route::group(["prefix" => "guest"], function () {
