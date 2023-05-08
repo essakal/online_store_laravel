@@ -17,7 +17,7 @@
             <p class="lead mb-4">$99.99</p>
             <p class="mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis fringilla tellus. Donec vel enim ut lorem bibendum tempor in eu ipsum. Nam eget urna vel est hendrerit interdum eu at ipsum.</p>
             <a class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            href="#"
+            href="{{ route('client.produit.cart', $data->id) }}"
             >
                 Add to Cart
             </a>

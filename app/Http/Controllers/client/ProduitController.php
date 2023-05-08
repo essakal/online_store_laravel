@@ -142,4 +142,31 @@ class ProduitController extends Controller
         // return $request;
         return view('client.filter', ["dd" => $dd, "cat" => $cat, "min" => $request["min-price"], "max" => $request["max-price"]]);
     }
+    public function cart(string $id)
+    {
+        // $userId = $request->input('user_id');
+        // $productId = $request->input('product_id');
+
+        // $user = User::find($userId);
+        // $product = Product::find($productId);
+
+        // if (!$user || !$product) {
+        //     return response()->json(['error' => 'Invalid user or product'], 400);
+        // }
+
+        // $cart = Cart::where('user_id', $userId)->first();
+
+        // if (!$cart) {
+        //     $cart = new Cart();
+        //     $cart->user_id = $userId;
+        //     $cart->save();
+        // }
+
+        // DB::table('produit_cart')->insert([
+        //     'cart_id' => $cart->id,
+        //     'product_id' => $productId,
+        // ]);
+        return 'cart';
+        // return redirect()->back();
+    }
 }
