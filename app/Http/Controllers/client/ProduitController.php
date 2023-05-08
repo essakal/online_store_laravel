@@ -166,7 +166,7 @@ class ProduitController extends Controller
         //     'cart_id' => $cart->id,
         //     'product_id' => $productId,
         // ]);
-        return 'cart';
+        return $id;
         // return redirect()->back();
     }
 }
