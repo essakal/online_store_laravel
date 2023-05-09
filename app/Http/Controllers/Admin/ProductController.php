@@ -178,4 +178,15 @@ class ProductController extends Controller
             return redirect()->route('admin.products.index')->with('success', 'Products have been uploaded successfully.');
         }
     }
+    public function commandes()
+    {
+        $cart = DB::table('commandes')
+            ->join('status', 'commandes.status_id', '=', 'status.id')
+            ->join('users', 'users.id', '=', 'commandes.user_id')
+            ->select('commandes.*', 'status.name as status_name', 'users.name', 'users.email')
+            ->orderByDesc('created_at')
+            ->get();
+        // return $cart;
+        return view('admin.product.commandes', ["cart"=>$cart]);
+    }
 }
