@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\client;
 
 use App\Http\Controllers\Controller;
+use App\Models\Cart;
 use App\Models\Produit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ProduitController extends Controller
@@ -144,29 +146,39 @@ class ProduitController extends Controller
     }
     public function cart(string $id)
     {
-        // $userId = $request->input('user_id');
-        // $productId = $request->input('product_id');
+        $userId = Auth::id();
+        $productId = $id;
 
-        // $user = User::find($userId);
-        // $product = Product::find($productId);
 
-        // if (!$user || !$product) {
-        //     return response()->json(['error' => 'Invalid user or product'], 400);
-        // }
+        $cart = Cart::where('user_id', $userId)->first();
 
-        // $cart = Cart::where('user_id', $userId)->first();
+        if (!$cart) {
+            $cart = new Cart();
+            $cart->user_id = $userId;
+            $cart->save();
+            $cart = Cart::where('user_id', $userId)->first();
+        }
 
-        // if (!$cart) {
-        //     $cart = new Cart();
-        //     $cart->user_id = $userId;
-        //     $cart->save();
-        // }
+        $record = DB::table('produit_cart')
+            ->where('cart_id', $cart->id)
+            ->where('produit_id', $productId)
+            ->first();
 
-        // DB::table('produit_cart')->insert([
-        //     'cart_id' => $cart->id,
-        //     'product_id' => $productId,
-        // ]);
-        return $id;
-        // return redirect()->back();
+        if (!$record) {
+            DB::table('produit_cart')->insert([
+                'cart_id' => $cart->id,
+                'produit_id' => $productId,
+                'qte' => 1,
+            ]);
+
+        } else {
+            DB::table('produit_cart')
+                ->where('cart_id', $cart->id)
+                ->where('produit_id', $productId)
+                ->update(['qte' => $record->qte += 1]);
+        }
+
+        // return $userId = Auth::id();
+        return redirect()->back();
     }
 }
