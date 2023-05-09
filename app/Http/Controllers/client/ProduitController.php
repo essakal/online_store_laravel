@@ -186,7 +186,7 @@ class ProduitController extends Controller
     public function shopping()
     {
         // $products= [];
-        $userId = 1; // replace with the actual user ID
+        $userId = Auth::id();
 
         $products = DB::table('products')
             ->select('products.*', 'produit_cart.qte')
@@ -199,8 +199,14 @@ class ProduitController extends Controller
         foreach ($products as $p) {
             $total += ($p->prix * $p->qte);
         }
+        $cat = DB::table('categories as c')
+            ->leftJoin('products as p', 'c.id', '=', 'p.category_id')
+            ->select('c.id', 'c.name', DB::raw('COUNT(p.id) as count'))
+            ->groupBy('c.id', 'c.name')
+            ->orderByDesc('count')
+            ->get();
         // return 'shopping client';
-        return view('client.shopping', ["cart" => $products, "total" => $total]);
+        return view('client.shopping', ["cart" => $products, "total" => $total, "cat" => $cat]);
     }
     public function confirmer()
     {
@@ -232,8 +238,6 @@ class ProduitController extends Controller
             return redirect()->route('client.produit.index')->with('success', 'commande has been ordered.');
         }
         return redirect()->route('client.produit.index')->with('error', 'no products in commande.');
-
-
 
     }
 }

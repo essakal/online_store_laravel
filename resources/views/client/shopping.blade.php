@@ -61,11 +61,11 @@
 @endsection
 
 
-{{-- @section('categories')
+@section('categories')
     @foreach ($cat as $c)
-        <a href="{{ route('guest.produit.category', $c->id) }}" aria-current="true"
+        <a href="{{ route('client.produit.category', $c->id) }}" aria-current="true"
             class="block w-full border-b border-neutral-200 px-6 py-2 transition duration-150 ease-in-out hover:bg-neutral-50 hover:text-neutral-700 dark:border-neutral-500 dark:hover:bg-neutral-800 dark:hover:text-white">
             {{ $c->name }} ({{$c->count}})
         </a>
     @endforeach
-@endsection --}}
+@endsection
