@@ -4,7 +4,9 @@ namespace App\Http\Controllers\client;
 
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
+use App\Models\Commande;
 use App\Models\Produit;
+use App\Models\ProduitCommande;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -202,6 +204,36 @@ class ProduitController extends Controller
     }
     public function confirmer()
     {
-        return "confirmer";
+        $userId = Auth::id();
+
+        $products = DB::table('produit_cart')
+            ->select('produit_id', 'qte')
+            ->join('carts', 'carts.id', '=', 'produit_cart.cart_id')
+            ->where('carts.user_id', '=', $userId)
+            ->get()
+            ->toArray();
+
+        if ($products) {
+            $commande = new Commande();
+            $commande->user_id = $userId;
+            $commande->status_id = 1;
+            $commande->save();
+
+            foreach ($products as $product) {
+                $produitCommand = new ProduitCommande();
+                $produitCommand->commande_id = $commande->id;
+                $produitCommand->produit_id = $product->produit_id;
+                $produitCommand->qte = $product->qte;
+                $produitCommand->save();
+            }
+
+            DB::table('carts')->where('user_id', $userId)->delete();
+
+            return redirect()->route('client.produit.index')->with('success', 'commande has been ordered.');
+        }
+        return redirect()->route('client.produit.index')->with('error', 'no products in commande.');
+
+
+
     }
 }

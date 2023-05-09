@@ -11,10 +11,11 @@ class ProduitCommande extends Model
     protected $table="produit_commande";
     protected $fillable = [
         "produit_id",
-        "commande_id"
+        "commande_id",
+        "qte"
     ];
     public function user()
     {
-        return $this->belongsTo(Cart::class);
+        return $this->belongsTo(Statu::class);
     }
 }
