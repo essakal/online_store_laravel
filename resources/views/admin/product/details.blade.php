@@ -4,6 +4,11 @@
         details commande
         {{-- "{{$search}}" --}}
     </h3>
+    @if ($message = Session::get('success'))
+        <div class="mb-4 mt-6 rounded-lg bg-success-100 px-6 py-5 text-base text-success-700" role="alert">
+            {{ $message }}
+        </div>
+    @endif
     <div class="bg-white shadow-lg rounded-lg overflow-hidden">
         <div class="p-4">
             <div class="mb-6">

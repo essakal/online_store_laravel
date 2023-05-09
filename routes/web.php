@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\client\ProduitController;
 use App\Http\Controllers\guest\ProduitguestController;
+use App\Http\Controllers\MailController;
 use App\Http\Controllers\PDFController;
 use Illuminate\Support\Facades\Route;
 
@@ -89,6 +90,7 @@ Route::group(["prefix" => "guest"], function () {
     Route::get('/produit/shopping', [ProduitguestController::class, 'shopping'])->name('guest.produit.shopping');
 });
 
+Route::get('/send-mail', [MailController::class, 'index'])->name("mail");
 
 
 Route::get('/dashboard', function () {

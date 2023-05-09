@@ -220,6 +220,8 @@ class ProductController extends Controller
         $commande->status_id = $request->status;
         $commande->save();
 
-        return back()->with('success', 'Status updated successfully.');
+        return redirect()->route('mail')->with('commande', $commande);
+        // return $commande;
+        // return back()->with('success', 'Status updated successfully.');
     }
 }
