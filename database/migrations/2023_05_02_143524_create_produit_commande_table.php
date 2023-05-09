@@ -14,11 +14,11 @@ return new class extends Migration
     {
         Schema::create('produit_commande', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger("id_product");
-            $table->unsignedBigInteger("id_commande");
+            $table->unsignedBigInteger("produit_id");
+            $table->unsignedBigInteger("commande_id");
             $table->timestamps();
-            $table->foreign("id_product")->references("id")->on("products")->onDelete("cascade");
-            $table->foreign("id_commande")->references("id")->on("commandes")->onDelete("cascade");
+            $table->foreign("produit_id")->references("id")->on("products")->onDelete("cascade");
+            $table->foreign("commande_id")->references("id")->on("commandes")->onDelete("cascade");
         });
     }
 

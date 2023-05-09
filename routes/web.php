@@ -69,6 +69,7 @@ Route::group(["prefix" => "client", "middleware" => ["auth", "verified"]], funct
     Route::get('/produit/filter', [ProduitController::class, 'filter'])->name('client.produit.filter');
     Route::get('/produit/cart/{id}', [ProduitController::class, 'cart'])->name('client.produit.cart');
     Route::get('/produit/shopping', [ProduitController::class, 'shopping'])->name('client.produit.shopping');
+    Route::get('/produit/confirmer', [ProduitController::class, 'confirmer'])->name('client.produit.confirmer');
 });
 
 Route::group(["prefix" => "guest"], function () {

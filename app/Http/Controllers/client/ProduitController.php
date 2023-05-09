@@ -185,7 +185,7 @@ class ProduitController extends Controller
     {
         // $products= [];
         $userId = 1; // replace with the actual user ID
-    
+
         $products = DB::table('products')
             ->select('products.*', 'produit_cart.qte')
             ->join('produit_cart', 'produit_cart.produit_id', '=', 'products.id')
@@ -194,10 +194,14 @@ class ProduitController extends Controller
             ->get();
 
         $total = 0;
-        foreach($products as $p){
+        foreach ($products as $p) {
             $total += ($p->prix * $p->qte);
         }
         // return 'shopping client';
-        return view('client.shopping', ["cart" => $products, "total"=>$total]);
+        return view('client.shopping', ["cart" => $products, "total" => $total]);
+    }
+    public function confirmer()
+    {
+        return "confirmer";
     }
 }
