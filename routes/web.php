@@ -70,6 +70,8 @@ Route::group(["prefix" => "client", "middleware" => ["auth", "verified"]], funct
     Route::get('/produit/cart/{id}', [ProduitController::class, 'cart'])->name('client.produit.cart');
     Route::get('/produit/shopping', [ProduitController::class, 'shopping'])->name('client.produit.shopping');
     Route::get('/produit/confirmer', [ProduitController::class, 'confirmer'])->name('client.produit.confirmer');
+    Route::get('/produit/historique', [ProduitController::class, 'historique'])->name('client.produit.historique');
+    Route::get('/produit/details/{id}', [ProduitController::class, 'details'])->name('client.produit.details');
 });
 
 Route::group(["prefix" => "guest"], function () {

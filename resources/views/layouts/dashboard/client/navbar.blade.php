@@ -73,7 +73,8 @@
                 </ul>
             </div>
             <div class="mx-8">
-                <form action="{{ route('client.produit.search') }}" class="relative flex w-full flex-wrap items-stretch">
+                <form action="{{ route('client.produit.search') }}"
+                    class="relative flex w-full flex-wrap items-stretch">
                     <input type="search" name="search"
                         class="relative w-72 m-0 -mr-0.5 block min-w-0 flex-auto rounded-l border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-700 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary"
                         placeholder="Search" aria-label="Search" aria-describedby="button-addon3" />
@@ -103,7 +104,7 @@
         <div class="relative flex items-center">
             <!-- Cart Icon -->
             <a class="mr-4 text-neutral-500 hover:text-neutral-700 focus:text-neutral-700 disabled:text-black/30 dark:text-neutral-200 dark:hover:text-neutral-300 dark:focus:text-neutral-300 [&.active]:text-black/90 dark:[&.active]:text-neutral-400"
-                href="{{route('client.produit.shopping')}}">
+                href="{{ route('client.produit.shopping') }}">
                 <span class="[&>svg]:w-5">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5">
                         <path
@@ -168,6 +169,12 @@
                     aria-labelledby="dropdownMenuButton2" data-te-dropdown-menu-ref>
                     <!-- Second dropdown menu items -->
                     <li>
+                        <a href="{{ route('client.produit.historique') }}"
+                            class="block w-full whitespace-nowrap bg-transparent px-4 py-2 text-sm font-normal text-neutral-700 hover:bg-neutral-100 active:text-neutral-800 active:no-underline disabled:pointer-events-none disabled:bg-transparent disabled:text-neutral-400 dark:text-neutral-200 dark:hover:bg-white/30">
+                            mon commandes
+                        </a>
+                    </li>
+                    <li>
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
                             <a href="{{ route('logout') }}"
@@ -178,6 +185,7 @@
                             </a>
                         </form>
                     </li>
+
                     {{-- <li>
                         <a class="block w-full whitespace-nowrap bg-transparent px-4 py-2 text-sm font-normal text-neutral-700 hover:bg-neutral-100 active:text-neutral-800 active:no-underline disabled:pointer-events-none disabled:bg-transparent disabled:text-neutral-400 dark:text-neutral-200 dark:hover:bg-white/30"
                             href="#" data-te-dropdown-item-ref>Another action</a>

@@ -240,4 +240,52 @@ class ProduitController extends Controller
         return redirect()->route('client.produit.index')->with('error', 'no products in commande.');
 
     }
+    public function historique()
+    {
+        $user = Auth::user();
+        $cart = DB::table('commandes')
+            ->join('status', 'commandes.status_id', '=', 'status.id')
+            ->where('commandes.user_id', $user->id)
+            ->select('commandes.*', 'status.name as status_name')
+            ->orderByDesc('created_at')
+            ->get();
+
+        $cat = DB::table('categories as c')
+            ->leftJoin('products as p', 'c.id', '=', 'p.category_id')
+            ->select('c.id', 'c.name', DB::raw('COUNT(p.id) as count'))
+            ->groupBy('c.id', 'c.name')
+            ->orderByDesc('count')
+            ->get();
+        return view('client.historique', ["cart" => $cart, "cat" => $cat]);
+        // return dd($cart);
+    }
+    public function details(string $id)
+    {
+        // $data = Produit::select('*')->find($id);
+        $userId = Auth::user()->id;
+
+        $products = DB::table('products')
+            ->select('products.*', 'produit_commande.qte', 'status.name AS status_name', 'commandes.created_at AS cmddate')
+            ->join('produit_commande', 'produit_commande.produit_id', '=', 'products.id')
+            ->join('commandes', 'commandes.id', '=', 'produit_commande.commande_id')
+            ->join('status', 'status.id', '=', 'commandes.status_id')
+            ->where('commandes.user_id', '=', 1)
+            ->where('commandes.id', '=', $id)
+            ->get();
+
+        $cat = DB::table('categories as c')
+            ->leftJoin('products as p', 'c.id', '=', 'p.category_id')
+            ->select('c.id', 'c.name', DB::raw('COUNT(p.id) as count'))
+            ->groupBy('c.id', 'c.name')
+            ->orderByDesc('count')
+            ->get();
+
+            $total = 0;
+            foreach ($products as $p) {
+                $total += ($p->prix * $p->qte);
+            }
+        return view('client.details', ['cart' => $products, "cat" => $cat, "total"=>$total]);
+        // return $products;
+        // return view('client.historique', ["cart" => $products, "cat" => $cat]);
+    }
 }
