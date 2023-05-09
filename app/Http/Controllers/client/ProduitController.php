@@ -181,4 +181,23 @@ class ProduitController extends Controller
         // return $userId = Auth::id();
         return redirect()->back();
     }
+    public function shopping()
+    {
+        // $products= [];
+        $userId = 1; // replace with the actual user ID
+    
+        $products = DB::table('products')
+            ->select('products.*', 'produit_cart.qte')
+            ->join('produit_cart', 'produit_cart.produit_id', '=', 'products.id')
+            ->join('carts', 'carts.id', '=', 'produit_cart.cart_id')
+            ->where('carts.user_id', '=', $userId)
+            ->get();
+
+        $total = 0;
+        foreach($products as $p){
+            $total += ($p->prix * $p->qte);
+        }
+        // return 'shopping client';
+        return view('client.shopping', ["cart" => $products, "total"=>$total]);
+    }
 }

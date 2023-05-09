@@ -103,7 +103,7 @@
         <div class="relative flex items-center">
             <!-- Cart Icon -->
             <a class="mr-4 text-neutral-500 hover:text-neutral-700 focus:text-neutral-700 disabled:text-black/30 dark:text-neutral-200 dark:hover:text-neutral-300 dark:focus:text-neutral-300 [&.active]:text-black/90 dark:[&.active]:text-neutral-400"
-                href="#">
+                href="{{route('client.produit.shopping')}}">
                 <span class="[&>svg]:w-5">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5">
                         <path
