@@ -52,6 +52,7 @@ Route::group(["prefix" => "admin", "middleware" => ["auth", "verified"]], functi
     Route::get('/commandes/historique', [ProductController::class, 'commandes'])->name('admin.commandes.historique');
     Route::get('/commandes/details/{id}', [ProductController::class, 'details'])->name('admin.commandes.details');
     Route::get('/generate-pdf/{id}', [PDFController::class, 'generatePDF'])->name('admin.generatePDF');
+    Route::post('/changestatus/{id}', [ProductController::class, 'changestatus'])->name('admin.changestatus');
 });
 
 Route::group(["prefix" => "admin", "middleware" => ["auth", "verified"]], function () {

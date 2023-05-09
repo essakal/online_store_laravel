@@ -6,7 +6,9 @@ use App\Exports\ProductExport;
 use App\Http\Controllers\Controller;
 use App\Imports\ProductImport;
 use App\Models\Category;
+use App\Models\Commande;
 use App\Models\Produit;
+use App\Models\Statu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -206,8 +208,18 @@ class ProductController extends Controller
         foreach ($products as $p) {
             $total += ($p->prix * $p->qte);
         }
-        return view('admin.product.details', ["cart" => $products, "total"=>$total]);
+
+        $status = Statu::get();
+        return view('admin.product.details', ["cart" => $products, "total" => $total, "status" => $status]);
 
         // return $products;
+    }
+    public function changestatus(Request $request, string $id)
+    {
+        $commande = Commande::find($id);
+        $commande->status_id = $request->status;
+        $commande->save();
+
+        return back()->with('success', 'Status updated successfully.');
     }
 }

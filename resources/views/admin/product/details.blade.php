@@ -7,19 +7,35 @@
     <div class="bg-white shadow-lg rounded-lg overflow-hidden">
         <div class="p-4">
             <div class="mb-6">
-                <a href="{{route('admin.generatePDF', $cart[0]->commande_id)}}"
+                <a href="{{ route('admin.generatePDF', $cart[0]->commande_id) }}"
                     class="mr-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                     download facture
                 </a>
-                {{-- <a href="{{ route('users.export') }}"
-                    class="mr-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    exprot produits
-                </a> --}}
-        
+            </div>
+            <div class="mb-6 flex items-center">
+                <form action="{{ route('admin.changestatus', $cart[0]->commande_id) }}" method="Post">
+                    @csrf
+                    <span class="mr-4 font-medium text-gray-700 dark:text-gray-300">Change status:</span>
+                    <select
+                        class="border w-48 border-gray-400 py-2 px-3 rounded-md text-gray-700 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 focus:outline-none focus:ring focus:ring-blue-300"
+                        name="status" id="">
+                        @foreach ($status as $statu)
+                            <option value="{{ $statu->id }}"
+                                {{ $statu->name == $cart[0]->status_name ? 'selected' : '' }}>{{ $statu->name }}</option>
+                            {{-- status_name --}}
+                        @endforeach
+                    </select>
+                    <button type="submit"
+                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        change status
+                    </button>
+                </form>
             </div>
 
+
             <div class="flex items-center justify-between px-4 py-2 bg-gray-200">
-                <div class="text-gray-600"><span class="text-gray-900 font-medium">status:</span> {{ $cart[0]->status_name }}
+                <div class="text-gray-600"><span class="text-gray-900 font-medium">status:</span>
+                    {{ $cart[0]->status_name }}
                 </div>
             </div>
             <div class="flex items-center justify-between px-4 py-2 bg-gray-200">
