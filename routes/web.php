@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\client\ProduitController;
 use App\Http\Controllers\guest\ProduitguestController;
+use App\Http\Controllers\PDFController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -50,6 +51,7 @@ Route::group(["prefix" => "admin", "middleware" => ["auth", "verified"]], functi
     Route::post('/users-import', [ProductController::class, 'import'])->name('users.import');
     Route::get('/commandes/historique', [ProductController::class, 'commandes'])->name('admin.commandes.historique');
     Route::get('/commandes/details/{id}', [ProductController::class, 'details'])->name('admin.commandes.details');
+    Route::get('/generate-pdf/{id}', [PDFController::class, 'generatePDF'])->name('admin.generatePDF');
 });
 
 Route::group(["prefix" => "admin", "middleware" => ["auth", "verified"]], function () {
@@ -85,6 +87,7 @@ Route::group(["prefix" => "guest"], function () {
     Route::get('/produit/filter', [ProduitguestController::class, 'filter'])->name('guest.produit.filter');
     Route::get('/produit/shopping', [ProduitguestController::class, 'shopping'])->name('guest.produit.shopping');
 });
+
 
 
 Route::get('/dashboard', function () {

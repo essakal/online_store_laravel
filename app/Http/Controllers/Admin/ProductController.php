@@ -192,7 +192,7 @@ class ProductController extends Controller
     public function details(string $id)
     {
         $products = DB::table('products')
-            ->select('products.*', 'produit_commande.qte', 'status.name AS status_name', 'commandes.created_at AS cmddate', 'users.name AS user_name', 'users.email AS user_email')
+            ->select('products.*', 'produit_commande.qte', 'status.name AS status_name', 'commandes.created_at AS cmddate', 'users.name AS user_name', 'users.email AS user_email', 'commandes.id AS commande_id')
             ->join('produit_commande', 'produit_commande.produit_id', '=', 'products.id')
             ->join('commandes', 'commandes.id', '=', 'produit_commande.commande_id')
             ->join('status', 'status.id', '=', 'commandes.status_id')
@@ -200,6 +200,7 @@ class ProductController extends Controller
             ->where('commandes.user_id', '=', 1)
             ->where('commandes.id', '=', $id)
             ->get();
+
 
         $total = 0;
         foreach ($products as $p) {
