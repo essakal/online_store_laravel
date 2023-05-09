@@ -19,10 +19,15 @@ class UserController extends Controller
         if ($user->is_blocked) {
             return view('blocked.index');
         } else {
-            $data = DB::table('users')->where('id', '!=', auth()->user()->id)->get();
-            return view('admin.user.index', ['data' => $data]);
+            if ($user->is_admin) {
+                // ------------------------------
+                $data = DB::table('users')->where('id', '!=', auth()->user()->id)->get();
+                return view('admin.user.index', ['data' => $data]);
+            } else {
+                return redirect()->route("client.produit.index");
+            }
         }
-        // ->orderByDesc('id')
+
     }
 
     /**
@@ -58,9 +63,16 @@ class UserController extends Controller
         if ($user->is_blocked) {
             return view('blocked.index');
         } else {
-            $data = User::select('*')->find($id);
-            return view("admin.user.edit", ['data' => $data]);
+            if ($user->is_admin) {
+                // ------------------------------
+                $data = User::select('*')->find($id);
+                return view("admin.user.edit", ['data' => $data]);
+            } else {
+                return redirect()->route("client.produit.index");
+            }
         }
+
+
     }
 
     /**
@@ -72,17 +84,24 @@ class UserController extends Controller
         if ($user->is_blocked) {
             return view('blocked.index');
         } else {
-            $request->validate([
-                'is_admin' => 'required',
-                'is_blocked' => 'required'
-            ]);
+            if ($user->is_admin) {
+                // ------------------------------
+                $request->validate([
+                    'is_admin' => 'required',
+                    'is_blocked' => 'required'
+                ]);
 
-            User::where('id', $id)->update([
-                'is_admin' => ($request->is_admin == "true" ? 1 : 0),
-                'is_blocked' => ($request->is_blocked == "true" ? 1 : 0),
-            ]);
-            return redirect()->route("admin.users.index")->with('success', 'user has been edited successfully.');
+                User::where('id', $id)->update([
+                    'is_admin' => ($request->is_admin == "true" ? 1 : 0),
+                    'is_blocked' => ($request->is_blocked == "true" ? 1 : 0),
+                ]);
+                return redirect()->route("admin.users.index")->with('success', 'user has been edited successfully.');
+
+            } else {
+                return redirect()->route("client.produit.index");
+            }
         }
+
     }
 
     /**

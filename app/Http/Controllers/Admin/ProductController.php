@@ -156,9 +156,15 @@ class ProductController extends Controller
         if ($user->is_blocked) {
             return view('blocked.index');
         } else {
-            Produit::where('id', $id)->delete();
-            return redirect()->route('admin.products.index')->with('success', 'product has been deleted successfully.');
+            if ($user->is_admin) {
+                // ------------------------------
+                Produit::where('id', $id)->delete();
+                return redirect()->route('admin.products.index')->with('success', 'product has been deleted successfully.');
+            } else {
+                return redirect()->route("client.produit.index");
+            }
         }
+
     }
 
     public function export()
@@ -167,8 +173,14 @@ class ProductController extends Controller
         if ($user->is_blocked) {
             return view('blocked.index');
         } else {
-            return Excel::download(new ProductExport, 'users.xlsx');
+            if ($user->is_admin) {
+                // ------------------------------
+                return Excel::download(new ProductExport, 'users.xlsx');
+            } else {
+                return redirect()->route("client.produit.index");
+            }
         }
+
     }
     public function import()
     {
@@ -176,52 +188,90 @@ class ProductController extends Controller
         if ($user->is_blocked) {
             return view('blocked.index');
         } else {
-            Excel::import(new ProductImport, request()->file('file'));
-            return redirect()->route('admin.products.index')->with('success', 'Products have been uploaded successfully.');
+            if ($user->is_admin) {
+                // ------------------------------
+                Excel::import(new ProductImport, request()->file('file'));
+                return redirect()->route('admin.products.index')->with('success', 'Products have been uploaded successfully.');
+
+            } else {
+                return redirect()->route("client.produit.index");
+            }
         }
+
     }
     public function commandes()
     {
-        $cart = DB::table('commandes')
-            ->join('status', 'commandes.status_id', '=', 'status.id')
-            ->join('users', 'users.id', '=', 'commandes.user_id')
-            ->select('commandes.*', 'status.name as status_name', 'users.name', 'users.email')
-            ->orderByDesc('created_at')
-            ->get();
-        // return $cart;
-        return view('admin.product.commandes', ["cart" => $cart]);
+        $user = Auth::user();
+        if ($user->is_blocked) {
+            return view('blocked.index');
+        } else {
+            if ($user->is_admin) {
+                // ------------------------------
+                $cart = DB::table('commandes')
+                    ->join('status', 'commandes.status_id', '=', 'status.id')
+                    ->join('users', 'users.id', '=', 'commandes.user_id')
+                    ->select('commandes.*', 'status.name as status_name', 'users.name', 'users.email')
+                    ->orderByDesc('created_at')
+                    ->get();
+                // return $cart;
+                return view('admin.product.commandes', ["cart" => $cart]);
+            } else {
+                return redirect()->route("client.produit.index");
+            }
+        }
     }
     public function details(string $id)
     {
-        $products = DB::table('products')
-            ->select('products.*', 'produit_commande.qte', 'status.name AS status_name', 'commandes.created_at AS cmddate', 'users.name AS user_name', 'users.email AS user_email', 'commandes.id AS commande_id')
-            ->join('produit_commande', 'produit_commande.produit_id', '=', 'products.id')
-            ->join('commandes', 'commandes.id', '=', 'produit_commande.commande_id')
-            ->join('status', 'status.id', '=', 'commandes.status_id')
-            ->join('users', 'users.id', '=', 'commandes.user_id')
-            ->where('commandes.user_id', '=', 1)
-            ->where('commandes.id', '=', $id)
-            ->get();
+        $user = Auth::user();
+        if ($user->is_blocked) {
+            return view('blocked.index');
+        } else {
+            if ($user->is_admin) {
+                // ------------------------------
+                $products = DB::table('products')
+                    ->select('products.*', 'produit_commande.qte', 'status.name AS status_name', 'commandes.created_at AS cmddate', 'users.name AS user_name', 'users.email AS user_email', 'commandes.id AS commande_id')
+                    ->join('produit_commande', 'produit_commande.produit_id', '=', 'products.id')
+                    ->join('commandes', 'commandes.id', '=', 'produit_commande.commande_id')
+                    ->join('status', 'status.id', '=', 'commandes.status_id')
+                    ->join('users', 'users.id', '=', 'commandes.user_id')
+                    ->where('commandes.user_id', '=', 1)
+                    ->where('commandes.id', '=', $id)
+                    ->get();
 
 
-        $total = 0;
-        foreach ($products as $p) {
-            $total += ($p->prix * $p->qte);
+                $total = 0;
+                foreach ($products as $p) {
+                    $total += ($p->prix * $p->qte);
+                }
+
+                $status = Statu::get();
+                return view('admin.product.details', ["cart" => $products, "total" => $total, "status" => $status]);
+
+            } else {
+                return redirect()->route("client.produit.index");
+            }
         }
-
-        $status = Statu::get();
-        return view('admin.product.details', ["cart" => $products, "total" => $total, "status" => $status]);
-
         // return $products;
     }
     public function changestatus(Request $request, string $id)
     {
-        $commande = Commande::find($id);
-        $commande->status_id = $request->status;
-        $commande->save();
+        $user = Auth::user();
+        if ($user->is_blocked) {
+            return view('blocked.index');
+        } else {
+            if ($user->is_admin) {
+                // ------------------------------
+                $commande = Commande::find($id);
+                $commande->status_id = $request->status;
+                $commande->save();
 
-        return redirect()->route('mail')->with('commande', $commande);
-        // return $commande;
-        // return back()->with('success', 'Status updated successfully.');
+                return redirect()->route('mail')->with('commande', $commande);
+                // return $commande;
+                // return back()->with('success', 'Status updated successfully.');
+            } else {
+                return redirect()->route("client.produit.index");
+            }
+        }
+
     }
 }
