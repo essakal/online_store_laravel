@@ -49,6 +49,7 @@ Route::group(["prefix" => "admin", "middleware" => ["auth", "verified"]], functi
     Route::get('/users-export', [ProductController::class, 'export'])->name('users.export');
     Route::post('/users-import', [ProductController::class, 'import'])->name('users.import');
     Route::get('/commandes/historique', [ProductController::class, 'commandes'])->name('admin.commandes.historique');
+    Route::get('/commandes/details/{id}', [ProductController::class, 'details'])->name('admin.commandes.details');
 });
 
 Route::group(["prefix" => "admin", "middleware" => ["auth", "verified"]], function () {

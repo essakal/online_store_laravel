@@ -187,6 +187,26 @@ class ProductController extends Controller
             ->orderByDesc('created_at')
             ->get();
         // return $cart;
-        return view('admin.product.commandes', ["cart"=>$cart]);
+        return view('admin.product.commandes', ["cart" => $cart]);
+    }
+    public function details(string $id)
+    {
+        $products = DB::table('products')
+            ->select('products.*', 'produit_commande.qte', 'status.name AS status_name', 'commandes.created_at AS cmddate', 'users.name AS user_name', 'users.email AS user_email')
+            ->join('produit_commande', 'produit_commande.produit_id', '=', 'products.id')
+            ->join('commandes', 'commandes.id', '=', 'produit_commande.commande_id')
+            ->join('status', 'status.id', '=', 'commandes.status_id')
+            ->join('users', 'users.id', '=', 'commandes.user_id')
+            ->where('commandes.user_id', '=', 1)
+            ->where('commandes.id', '=', $id)
+            ->get();
+
+        $total = 0;
+        foreach ($products as $p) {
+            $total += ($p->prix * $p->qte);
+        }
+        return view('admin.product.details', ["cart" => $products, "total"=>$total]);
+
+        // return $products;
     }
 }
