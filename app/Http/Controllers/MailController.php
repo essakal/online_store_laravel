@@ -27,7 +27,7 @@ class MailController extends Controller
             'data' => $data
         ];
 
-        Mail::to($data->user_email)->send(new DemoMail($data));
+        Mail::to($data->user_email)->send(new DemoMail($mailData));
         // Mail::to('abdoessakal@gmail.com')->send(new DemoMail($mailData));
         // return $data;
         // dd("Email is sent successfully.");
