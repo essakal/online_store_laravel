@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     // return view('welcome');
-    return ('welcome');
+    return redirect()->route("guest.produit.index");
 })->name('welcome');
 
 // Route::get('/client/produit', function () {
